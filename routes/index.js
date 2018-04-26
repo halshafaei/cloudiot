@@ -9,15 +9,6 @@ var client = mqtt.connect(mqtt_url);
 
 
 
-
-
-
-
-
-
-
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var config =  url.parse(mqtt_url);

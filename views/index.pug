@@ -32,7 +32,7 @@ html
           li.list-group-item Topic: #{config.topic}
     script.
       var target = document.getElementById("messages");
-      var es = new EventSource('/stream');
+      var es = new EventSource('/index/stream');
       es.onerror = function(e)  { console.error(e); };
       es.onopen = function(e) { console.log("Open", e);};
       es.onmessage = function(e) {
@@ -47,7 +47,7 @@ html
         var msg = input.value;
         if(msg) {
           input.value = "";
-          fetch("/publish", {
+          fetch("/index/publish", {
             headers: {"Content-type": "application/x-www-form-urlencoded"},
             method: "POST",
             body: "msg=" + msg
