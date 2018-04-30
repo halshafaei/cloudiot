@@ -57,14 +57,16 @@ client.on('connect', function() {
     client.subscribe(topic, function() {
       client.on('message', function(topic, msg, pkt) {
 		//res.write("New message\n");
-		var json = JSON.parse(msg);
-        res.write("data: " + json.date + ": " + json.msg + "\n\n");
+		// var json = JSON.parse(msg);
+        // res.write("data: " + json.date + ": " + json.msg + "\n\n");
+        res.write("data: " + msg + "\n\n");
         const MongoClient = require('mongodb').MongoClient;
         const MONGO_URL = 'mongodb://iot:123456789@ds255319.mlab.com:55319/iot';
         MongoClient.connect(MONGO_URL, function(err, db) {
         if (err) throw err;
         var dbo = db.db("iot");
-        var myobj = { date: json.date , msg: json.msg };
+        // var myobj = { date: json.date , msg: json.msg };
+        var myobj = { date: new Date() , msg: msg };
         dbo.collection("readings").insertOne(myobj, function(err, res) {
         if (err) throw err;
         console.log("1 document inserted");
