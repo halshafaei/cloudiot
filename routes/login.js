@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+var app = require('express');
+var router = app.Router();
 var url = require('url');
 var User=require('../lib/user');
+var app=require('../lib/user');
+var session = require('express-session')
+var cookieParser = require('cookie-parser');
 
 /* GET home page. */
+
 router.get('/', function(req, res, next) {
   res.render('login', {
   connected: true
@@ -21,15 +25,17 @@ router.post('/', function(req, res) {
   User.findOne({username:userid,password:pswrd}, function(err,user){
     if(err){
       console.log(err);
+      console.log("error");
       return res.status(500).send();
       
     }
 
     console.log(user);
     if(!user)
-      return res.redirect("/");
+      return res.redirect("/login");
     // return res.status(200).send();
-    res.redirect('index')
+    req.session.user = user
+    res.redirect('/index')
 
     
   

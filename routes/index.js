@@ -9,8 +9,16 @@ var client = mqtt.connect(mqtt_url);
 
 
 
+var sessionChecker = (req, res, next) => {
+    console.log(req.cookies.user_sid);
+    if (req.session.user && req.cookies.user_sid) {
+      next();
+    } else {
+        res.redirect("/login");
+    }    
+};
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',sessionChecker, function(req, res, next) {
   var config =  url.parse(mqtt_url);
   config.topic = topic;
   res.render('index', {
