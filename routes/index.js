@@ -29,15 +29,14 @@ router.get('/',sessionChecker, function(req, res, next) {
 
 client.on('connect', function() {
   router.post('/publish', function(req, res) {
-	var msg = JSON.stringify({
-	  date: new Date().toString(),
-	  msg: req.body.msg
-	});
-    client.publish(topic, msg, function() {
-      res.writeHead(204, { 'Connection': 'keep-alive' });
-      res.end();
-    });
+	var publishedmsg = JSON.stringify({
+	  message: req.body.msg
+	}); 
+  client.publish(topic, publishedmsg, function() {
+    res.writeHead(204, { 'Connection': 'keep-alive' });
+    res.end();
   });
+});
 
   router.get('/stream', function(req, res) {
     // send headers for event-stream connection
@@ -66,7 +65,8 @@ client.on('connect', function() {
         if (err) throw err;
         var dbo = db.db("iot");
         // var myobj = { date: json.date , msg: json.msg };
-        var myobj = { date: new Date() , msg: msg };
+        var myobj = { date: new Date() , msg: msg.toString() };
+        console.log(msg.toString());
         dbo.collection("readings").insertOne(myobj, function(err, res) {
         if (err) throw err;
         console.log("1 document inserted");
